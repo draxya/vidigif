@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>VIDIGIF</title>
+    <link rel="icon" href="logo.png" type="image/png" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="logo-container">
+        <img src="logo.png" alt="Logo" />
+      </div>
+      <h1>VIDIGIF</h1>
+      <form enctype="multipart/form-data" action="/upload" method="POST">
+        <div class="file-input-wrapper">
+          <label for="video-input" class="file-input-label">
+            <span>Select Video</span>
+            <input
+              type="file"
+              id="video-input"
+              name="video"
+              accept="video/*"
+              required
+            />
+          </label>
+        </div>
+        <video id="video-preview" src="" controls></video>
+        <button type="submit" class="convert-button">Convert to GIF</button>
+      </form>
+    </div>
+
+    <div class="dark-mode-toggle">
+      <label class="switch">
+        <input type="checkbox" id="dark-mode-switch" />
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <script>
+      
+      // Get references to the file input and video preview elements
+      const videoInput = document.getElementById("video-input");
+      const videoPreview = document.getElementById("video-preview");
+
+      // Hide the video preview section initially
+      videoPreview.style.display = "none";
+
+      // Add event listener to the file input field
+      videoInput.addEventListener("change", () => {
+        // Get the selected file
+        const file = videoInput.files[0];
+
+        // Check if a file is selected
+        if (file) {
+          // Create a local URL for the selected file
+          const videoURL = URL.createObjectURL(file);
+
+          // Set the video source to the local URL
+          videoPreview.src = videoURL;
+
+          // Show the video preview section
+          videoPreview.style.display = "block";
+        } else {
+          // If no file is selected, clear the video source
+          videoPreview.src = "";
+
+          // Hide the video preview section
+          videoPreview.style.display = "none";
+        }
+      });
+
+      const darkModeSwitch = document.getElementById("dark-mode-switch");
+
+      // Check if dark mode preference exists in cookies
+      const darkModeEnabled = localStorage.getItem("darkModeEnabled");
+      if (darkModeEnabled) {
+        document.body.classList.add("dark-mode");
+        darkModeSwitch.checked = true;
+      }
+
+      // Toggle dark mode and save preference
+      darkModeSwitch.addEventListener("change", () => {
+        if (darkModeSwitch.checked) {
+          document.body.classList.add("dark-mode");
+          localStorage.setItem("darkModeEnabled", true);
+        } else {
+          document.body.classList.remove("dark-mode");
+          localStorage.removeItem("darkModeEnabled");
+        }
+      });
+    </script>
+  </body>
+</html>
